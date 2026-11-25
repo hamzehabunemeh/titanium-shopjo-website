@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /thanks.html
+Disallow: /ar/thanks.html
+
+Sitemap: https://titaniumshopjo.netlify.app/sitemap.xml

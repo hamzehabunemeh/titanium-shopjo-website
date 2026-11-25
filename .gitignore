@@ -1,0 +1,12 @@
+# secrets — never commit
+.env
+.env.*
+!.env.example
+# local / OS
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+node_modules/
+# large source photos stay outside the repo
+src-images/
