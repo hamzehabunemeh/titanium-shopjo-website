@@ -19,6 +19,16 @@ LANGS = ("en", "ar")
 SERVICE_BY_SLUG = {s["slug"]: s for s in C.SERVICES}
 
 
+def _ver(path):
+    """Short content hash, so browsers fetch the new file after every change."""
+    import hashlib
+    return hashlib.md5((ROOT / path).read_bytes()).hexdigest()[:8]
+
+
+CSS_V = _ver("assets/css/style.css")
+JS_V = _ver("assets/js/main.js")
+
+
 def esc(s):
     return html.escape(str(s), quote=True)
 
@@ -152,8 +162,8 @@ def head(p, title, description, noindex=False, schema=False):
 <link rel="apple-touch-icon" href="{p.asset('assets/brand/apple-touch-icon.png')}">
 <link rel="manifest" href="{p.asset('site.webmanifest')}">
 {''.join(f'<link rel="preload" href="{p.asset("assets/fonts/" + f)}" as="font" type="font/woff2" crossorigin>' for f in PRELOAD[p.lang])}
-<link rel="stylesheet" href="{p.asset('assets/css/style.css')}">
-<script src="{p.asset('assets/js/main.js')}" defer></script>
+<link rel="stylesheet" href="{p.asset('assets/css/style.css')}?v={CSS_V}">
+<script src="{p.asset('assets/js/main.js')}?v={JS_V}" defer></script>
 {jsonld(p) if schema else ''}
 </head>
 <body>
