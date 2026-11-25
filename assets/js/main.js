@@ -61,6 +61,53 @@
       reveals.forEach(function (el) { io.observe(el); });
     }
 
+    // Press effect on photos for touch screens
+    document.querySelectorAll(".frame").forEach(function (frame) {
+      var timer;
+      frame.addEventListener("touchstart", function () {
+        clearTimeout(timer); frame.classList.add("is-pressed");
+      }, { passive: true });
+      ["touchend", "touchcancel"].forEach(function (ev) {
+        frame.addEventListener(ev, function () {
+          timer = setTimeout(function () { frame.classList.remove("is-pressed"); }, 450);
+        }, { passive: true });
+      });
+    });
+
+    // Founder portrait: colour when it is well in view (phones) or tapped
+    var founders = document.querySelectorAll("[data-founder]");
+    if (founders.length && "IntersectionObserver" in window && !window.matchMedia("(hover: hover)").matches) {
+      var fo = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { e.target.classList.toggle("is-active", e.intersectionRatio > 0.6); });
+      }, { threshold: [0, 0.6, 1] });
+      founders.forEach(function (f) { fo.observe(f); });
+    }
+    founders.forEach(function (f) {
+      f.addEventListener("click", function () { f.classList.toggle("is-active"); });
+    });
+
+    // Count-up for numbers when they first appear ("5 min", "2018", "24/7" stays as is)
+    if (!reduce && "IntersectionObserver" in window) {
+      var counters = document.querySelectorAll(".stat-num");
+      var co = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          co.unobserve(e.target);
+          var el = e.target, text = el.textContent, m = text.match(/^(\D*)(\d+)(\D*)$/);
+          if (!m || text.indexOf("/") > -1) return;
+          var end = parseInt(m[2], 10), start = end > 1000 ? end - 30 : 0, t0 = null;
+          var step = function (ts) {
+            if (!t0) t0 = ts;
+            var k = Math.min((ts - t0) / 1400, 1), eased = 1 - Math.pow(1 - k, 3);
+            el.textContent = m[1] + Math.round(start + (end - start) * eased) + m[3];
+            if (k < 1) requestAnimationFrame(step); else el.textContent = text;
+          };
+          requestAnimationFrame(step);
+        });
+      }, { threshold: 0.6 });
+      counters.forEach(function (c) { co.observe(c); });
+    }
+
     // Fleet filter
     var fleet = document.querySelector("[data-fleet]");
     if (fleet) {

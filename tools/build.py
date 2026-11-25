@@ -392,7 +392,7 @@ def build_home(p):
 
 <section class="section section-alt">
   <div class="container split founder-teaser">
-    <div class="split-media reveal"><span class="frame frame-portrait">{img(p, 'founder-portrait', p.t(C.ABOUT['founder_name']), '(min-width: 900px) 40vw, 100vw')}</span></div>
+    <div class="split-media reveal"><span class="frame frame-portrait frame-founder" data-founder>{img(p, 'founder-portrait', p.t(C.ABOUT['founder_name']), '(min-width: 900px) 40vw, 100vw')}</span></div>
     <div class="split-text reveal">
       <p class="kicker">{p.t(H['founder_kicker'])}</p>
       <blockquote class="quote">“{p.t(H['founder_quote'])}”</blockquote>
@@ -592,7 +592,7 @@ def build_about(p):
 </section>
 <section class="section section-alt" id="founder">
   <div class="container split founder">
-    <div class="split-media reveal"><span class="frame frame-portrait">{img(p, 'founder-portrait', p.t(A['founder_name']), '(min-width: 900px) 40vw, 100vw')}</span></div>
+    <div class="split-media reveal"><span class="frame frame-portrait frame-founder" data-founder>{img(p, 'founder-portrait', p.t(A['founder_name']), '(min-width: 900px) 40vw, 100vw')}</span></div>
     <div class="split-text reveal">
       <p class="kicker">{p.t(A['founder_title'])}</p>
       <div class="prose">{paras}</div>

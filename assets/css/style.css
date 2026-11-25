@@ -425,12 +425,49 @@ html[lang="ar"] .footer-title { letter-spacing: 0; font-size: 15px; }
 .js .float-wa { opacity: 0; pointer-events: none; transform: translateY(12px); transition: opacity .4s, transform .4s var(--ease); }
 .js .float-wa.is-visible { opacity: 1; pointer-events: auto; transform: none; }
 
+/* ---------- interactions ----------
+   Hover on desktop, press on phones. Everything stays subtle. */
+.frame::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.14) 50%, transparent 65%);
+  transform: translateX(-130%); transition: transform 1.2s var(--ease);
+}
+.frame.is-pressed img { transform: scale(1.05); }
+.frame.is-pressed::before { transform: translateX(130%); }
+@media (hover: hover) {
+  .frame:hover img, a:hover .frame img { transform: scale(1.05); }
+  .frame:hover::before, a:hover .frame::before { transform: translateX(130%); }
+  .btn:hover { transform: translateY(-2px); }
+  .fleet-card:hover .fleet-name, .celeb:hover figcaption { color: #fff; }
+  .jet-class:hover, .value:hover { transform: translateY(-6px); border-color: var(--line-strong); }
+  .service-card a:hover .card-title { color: #fff; }
+}
+.jet-class, .value { transition: transform .6s var(--ease), border-color .4s; }
+.fleet-name, .card-title, .celeb figcaption { transition: color .4s; }
+
+/* Founder portrait: black & white, turns to colour on hover / when it comes into view */
+.frame-founder img { filter: grayscale(1) contrast(1.06) brightness(0.95); transition: filter 1.4s var(--ease), transform 1.4s var(--ease); }
+.frame-founder.is-active img { filter: none; }
+@media (hover: hover) { .frame-founder:hover img { filter: none; } }
+
+/* Hero photo settles in slowly */
+.hero-media img { animation: hero-settle 9s var(--ease) both; }
+@keyframes hero-settle { from { transform: scale(1.08); } to { transform: scale(1); } }
+
+/* Stats and step numbers count up when they appear */
+.stat-num, .step-num { font-variant-numeric: tabular-nums; }
+
 /* ---------- reveal on scroll ---------- */
 .js .reveal { opacity: 0; transform: translateY(28px); transition: opacity 1.1s var(--ease), transform 1.1s var(--ease); }
 .js .reveal.in { opacity: 1; transform: none; }
+.js .service-grid > .reveal:nth-child(4n+2), .js .celeb-grid > .reveal:nth-child(3n+2), .js .steps > .reveal:nth-child(2), .js .jet-classes > .reveal:nth-child(2), .js .values > .reveal:nth-child(2) { transition-delay: .12s; }
+.js .service-grid > .reveal:nth-child(4n+3), .js .celeb-grid > .reveal:nth-child(3n+3), .js .steps > .reveal:nth-child(3), .js .jet-classes > .reveal:nth-child(3), .js .values > .reveal:nth-child(3) { transition-delay: .24s; }
+.js .service-grid > .reveal:nth-child(4n+4), .js .steps > .reveal:nth-child(4), .js .jet-classes > .reveal:nth-child(4) { transition-delay: .36s; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
   .js .reveal { opacity: 1; transform: none; }
+  .hero-media img { animation: none; }
+  .frame-founder img { filter: none; }
 }
