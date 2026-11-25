@@ -167,8 +167,11 @@ html[lang="ar"] .btn-sm { font-size: 15px; }
 .site-header { position: fixed; inset: 0 0 auto; z-index: 50; transition: background .4s, border-color .4s; border-bottom: 1px solid transparent; }
 .site-header.is-solid, .site-header.menu-open { background: rgba(10, 10, 11, 0.94); border-bottom-color: var(--line); }
 @supports (backdrop-filter: blur(1px)) {
-  .site-header.is-solid { background: rgba(10, 10, 11, 0.78); backdrop-filter: blur(14px); }
+  .site-header.is-solid { background: rgba(10, 10, 11, 0.78); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
 }
+/* A blurred header becomes the containing block of the fixed mobile menu and
+   crops it, so the blur is switched off while the menu is open. */
+.site-header.menu-open, .site-header.menu-open.is-solid { background: var(--bg); -webkit-backdrop-filter: none; backdrop-filter: none; }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: var(--header-h); }
 .brand { display: flex; align-items: center; gap: 12px; flex: none; }
 .brand-emblem { width: 40px; height: auto; }
@@ -200,7 +203,7 @@ html[lang="ar"] .main-nav a { letter-spacing: 0; text-transform: none; font-size
 .menu-open .menu-toggle .icon-open { display: none; }
 .menu-open .menu-toggle .icon-close { display: block; }
 
-.mobile-menu { position: fixed; inset: var(--header-h) 0 0; background: var(--bg); overflow-y: auto; padding-block: 24px 48px; }
+.mobile-menu { position: fixed; top: var(--header-h); left: 0; right: 0; height: calc(100vh - var(--header-h)); height: calc(100dvh - var(--header-h)); background: var(--bg); overflow-y: auto; overscroll-behavior: contain; padding-block: 24px 48px; }
 .mobile-links li { border-bottom: 1px solid var(--line); }
 .mobile-links a { display: block; padding: 14px 0; font-family: var(--font-display); font-size: 26px; }
 .mobile-actions { display: grid; gap: 12px; margin-top: 32px; }
