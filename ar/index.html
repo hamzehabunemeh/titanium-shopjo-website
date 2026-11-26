@@ -26,9 +26,9 @@
 <link rel="apple-touch-icon" href="../assets/brand/apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/fonts/noto-naskh-arabic-arabic-600-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/ibm-plex-sans-arabic-arabic-300-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/css/style.css?v=fe3d0dcf">
+<link rel="stylesheet" href="../assets/css/style.css?v=1d336f13">
 <script src="../assets/js/intro.js?v=e83b9406"></script>
-<script src="../assets/js/main.js?v=43afb976" defer></script>
+<script src="../assets/js/main.js?v=05a38070" defer></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LocalBusiness", "name": "Titanium Shop", "slogan": "فخامة بلا حد", "url": "https://titaniumshopjo.netlify.app/", "logo": "https://titaniumshopjo.netlify.app/assets/brand/logo.png", "image": "https://titaniumshopjo.netlify.app/assets/brand/og-image.jpg", "telephone": "+962793888444", "email": "titaniumshopjo@gmail.com", "foundingDate": "2018", "address": {"@type": "PostalAddress", "streetAddress": "Al-Karadsheh Tower, 1st Floor", "addressLocality": "Amman", "addressCountry": "JO"}, "areaServed": ["JO", "AE", "SA", "EG", "LB"], "openingHoursSpecification": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "00:00", "closes": "23:59"}, "sameAs": ["https://www.instagram.com/titaniumshopjo/", "https://www.instagram.com/titanium_event.jo/", "https://www.facebook.com/TitaniumShopJO"]}</script>
 </head>
 <body>
@@ -92,6 +92,7 @@
       <a class="btn btn-silver" href="contact.html">اطلب خدمتك</a>
       <a class="btn btn-ghost" href="#services">استكشف خدماتنا</a>
     </div>
+    <p class="amman-clock" data-amman-clock hidden></p>
   </div>
 </section>
 
@@ -196,6 +197,24 @@
   </div>
 </section>
 
+<section class="section section-alt planner" id="plan">
+  <div class="container narrow-wide">
+    <div class="section-head center reveal">
+      <span class="ornament" aria-hidden="true"></span>
+      <h2 class="h2">خطّط رحلتك في طلب واحد</h2>
+      <p class="lead">اختر كل ما تحتاجه، ونرتّبه لك معاً: من باب الطائرة حتى آخر يوم في زيارتك.</p>
+    </div>
+    <form class="planner-form" action="contact.html#request" method="get" data-planner>
+      <fieldset>
+        <legend class="visually-hidden">الخدمات المطلوبة</legend>
+        <ul class="choices"><li><input class="choice-input" type="checkbox" id="plan-cars" name="services" value="cars" data-label="السيارات الفاخرة"><label class="choice" for="plan-cars"><svg class="icon choice-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 21 12 12 21 3 12Z"/></svg><span>السيارات الفاخرة</span></label></li><li><input class="choice-input" type="checkbox" id="plan-jets" name="services" value="jets" data-label="الطائرات الخاصة"><label class="choice" for="plan-jets"><svg class="icon choice-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 21 12 12 21 3 12Z"/></svg><span>الطائرات الخاصة</span></label></li><li><input class="choice-input" type="checkbox" id="plan-yachts" name="services" value="yachts" data-label="اليخوت الفاخرة"><label class="choice" for="plan-yachts"><svg class="icon choice-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 21 12 12 21 3 12Z"/></svg><span>اليخوت الفاخرة</span></label></li><li><input class="choice-input" type="checkbox" id="plan-protection" name="services" value="protection" data-label="الحراسة والمرافقة"><label class="choice" for="plan-protection"><svg class="icon choice-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 21 12 12 21 3 12Z"/></svg><span>الحراسة والمرافقة</span></label></li><li><input class="choice-input" type="checkbox" id="plan-airport" name="services" value="airport" data-label="الاستقبال من باب الطائرة"><label class="choice" for="plan-airport"><svg class="icon choice-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 21 12 12 21 3 12Z"/></svg><span>الاستقبال من باب الطائرة</span></label></li><li><input class="choice-input" type="checkbox" id="plan-hotels" name="services" value="hotels" data-label="حجوزات الفنادق"><label class="choice" for="plan-hotels"><svg class="icon choice-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 21 12 12 21 3 12Z"/></svg><span>حجوزات الفنادق</span></label></li><li><input class="choice-input" type="checkbox" id="plan-concierge" name="services" value="concierge" data-label="Whatever, Whenever"><label class="choice" for="plan-concierge"><svg class="icon choice-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 21 12 12 21 3 12Z"/></svg><span>Whatever, Whenever</span></label></li><li><input class="choice-input" type="checkbox" id="plan-events" name="services" value="events" data-label="الأعراس والمؤتمرات"><label class="choice" for="plan-events"><svg class="icon choice-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 21 12 12 21 3 12Z"/></svg><span>الأعراس والمؤتمرات</span></label></li></ul>
+      </fieldset>
+      <p class="planner-count" data-planner-count aria-live="polite"></p>
+      <div class="center"><button class="btn btn-silver" type="submit">أكمل الطلب</button></div>
+    </form>
+  </div>
+</section>
+
 <section class="section">
   <div class="container split">
     <div class="split-media reveal"><span class="frame frame-square"><img src="../assets/img/tarmac-meet-941.webp" srcset="../assets/img/tarmac-meet-480.webp 480w, ../assets/img/tarmac-meet-941.webp 941w" sizes="(min-width: 900px) 50vw, 100vw" width="941" height="941" alt="سيارتا فان فاخرتان وفريق استقبال بجانب طائرة خاصة" loading="lazy" decoding="async"></span></div>
@@ -258,6 +277,7 @@
     <span class="ornament" aria-hidden="true"></span>
     <h2 class="h2">اطلب ما تشاء، متى تشاء</h2>
     <p class="lead">فريقنا متاح على مدار الساعة، ونرد على طلبك خلال 5 دقائق.</p>
+    <p class="amman-clock" data-amman-clock hidden></p>
     <div class="btn-row center">
       <a class="btn btn-silver" href="https://wa.me/962799888444?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20Titanium%20Shop%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%AA%D9%82%D8%AF%D9%8A%D9%85%20%D8%B7%D9%84%D8%A8." target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z" fill="currentColor" stroke="none"/></svg>واتساب</a>
       <a class="btn btn-ghost" href="tel:+962793888444"><svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><span dir="ltr">0793 888 444</span></a>

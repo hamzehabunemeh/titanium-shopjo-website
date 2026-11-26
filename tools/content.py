@@ -417,6 +417,34 @@ SERVICES = [
     },
 ]
 
+PLANNER = {
+    "title": L("خطّط رحلتك في طلب واحد", "Plan your trip in one request"),
+    "text": L("اختر كل ما تحتاجه، ونرتّبه لك معاً: من باب الطائرة حتى آخر يوم في زيارتك.",
+              "Choose everything you need and we'll arrange it all together, from the aircraft door to the last day of your stay."),
+    "legend": L("الخدمات المطلوبة", "Services you need"),
+    "cta": L("أكمل الطلب", "Continue your request"),
+    "count_one": L("خدمة واحدة مختارة", "1 service selected"),
+    "count_many": L("{n} خدمات مختارة", "{n} services selected"),
+}
+
+CAR_DIALOG = {
+    "view": L("التفاصيل", "Details"),
+    "request": L("اطلب هذه السيارة", "Request this car"),
+    "facts": [
+        (L("الفئة", "Type"), L("", "")),
+        (L("السائق", "Chauffeur"), L("مع سائق خاص أو بقيادتك", "Private chauffeur or self-drive")),
+        (L("أقل مدة للحجز", "Minimum rental"), L("يومان", "Two days")),
+        (L("الموديل", "Model year"), L("2024–2026", "2024–2026")),
+        (L("السعر", "Price"), L("عرض سعر خلال 5 دقائق", "A quote within 5 minutes")),
+    ],
+}
+SERVICE_BY_SLUG_TITLE = L("السيارات الفاخرة", "Luxury Cars")
+
+CLOCK = {
+    "en": "It's {time} in Amman, and our team is available.",
+    "ar": "الساعة الآن {time} في عمّان، وفريقنا متاح.",
+}
+
 HOME = {
     "title": L("Titanium Shop | فخامة بلا حد في الأردن", "Titanium Shop | Unlimited Luxury in Jordan"),
     "meta": L("سيارات فاخرة، طائرات خاصة، يخوت، حراسة شخصية، استقبال VIP من المطار، فنادق، وتنظيم أعراس في الأردن. نرد خلال 5 دقائق، على مدار الساعة.",
@@ -493,13 +521,15 @@ CONTACT_PAGE = {
     "phone": L("رقم الهاتف (مع رمز الدولة)", "Phone number (with country code)"),
     "email": L("البريد الإلكتروني (اختياري)", "Email (optional)"),
     "service": L("الخدمة المطلوبة", "Service"),
+    "services_pick": L("الخدمات المطلوبة (يمكنك اختيار أكثر من خدمة)", "Services (choose one or more)"),
+    "services_error": L("اختر خدمة واحدة على الأقل.", "Please choose at least one service."),
     "choose": L("اختر الخدمة", "Choose a service"),
     "other": L("طلب آخر", "Other request"),
     "date": L("التاريخ", "Date"),
     "details": L("تفاصيل إضافية (اختياري)", "Additional details (optional)"),
     "send": L("إرسال الطلب", "Send request"),
-    "note": L("بالضغط على إرسال، أنت توافق على سياسة الخصوصية. نستخدم بياناتك فقط للرد على طلبك.",
-              "By sending, you agree to our privacy policy. We only use your details to reply to your request."),
+    "note": L("نستخدم بياناتك فقط للرد على طلبك.",
+              "We only use your details to reply to your request."),
     "driver": L("السائق", "Chauffeur"),
     "with_driver": L("مع سائق", "With chauffeur"),
     "self_drive": L("بدون سائق", "Self-drive"),

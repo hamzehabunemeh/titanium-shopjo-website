@@ -166,36 +166,108 @@
       });
     }
 
-    // Request form: service-specific fields, subject line, WhatsApp follow-up
+    var isAr = doc.lang === "ar";
+
+    // Live Amman time
+    var clocks = document.querySelectorAll("[data-amman-clock]");
+    if (clocks.length && window.Intl) {
+      var tick = function () {
+        var now = new Date(), time;
+        try {
+          if (isAr) {
+            var hm = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Amman", hour: "numeric", minute: "2-digit", hour12: false }).format(now).split(":");
+            var h24 = parseInt(hm[0], 10) % 24, h12 = h24 % 12 || 12;
+            var part = h24 < 5 ? "فجراً" : h24 < 12 ? "صباحاً" : h24 < 17 ? "ظهراً" : "مساءً";
+            time = h12 + ":" + hm[1] + " " + part;
+          } else {
+            time = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Amman", hour: "numeric", minute: "2-digit" }).format(now);
+          }
+        } catch (e) { return; }
+        var text = isAr ? "الساعة الآن " + time + " في عمّان، وفريقنا متاح." : "It's " + time + " in Amman, and our team is available.";
+        clocks.forEach(function (c) { c.textContent = text; c.hidden = false; });
+      };
+      tick();
+      setInterval(tick, 30000);
+    }
+
+    // Home planner: live count of chosen services
+    var planner = document.querySelector("[data-planner]");
+    if (planner) {
+      var count = planner.querySelector("[data-planner-count]");
+      var upd = function () {
+        var n = planner.querySelectorAll("input:checked").length;
+        count.textContent = !n ? "" : n === 1 ? (isAr ? "خدمة واحدة مختارة" : "1 service selected") : (isAr ? n + " خدمات مختارة" : n + " services selected");
+      };
+      planner.addEventListener("change", upd);
+      upd();
+    }
+
+    // Car details dialog
+    var dlg = document.querySelector("[data-car-dialog]");
+    if (dlg && typeof dlg.showModal === "function") {
+      var dImg = dlg.querySelector("[data-car-img]"), dTitle = dlg.querySelector("[data-car-title]");
+      var dCat = dlg.querySelector("[data-car-cat-out]"), dReq = dlg.querySelector("[data-car-request]");
+      var dWa = dlg.querySelector("[data-car-wa]"), lastBtn = null;
+      var waBase = dWa.href.split("?")[0];
+      document.querySelectorAll("[data-car]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var name = btn.getAttribute("data-car"), im = btn.querySelector("img");
+          lastBtn = btn;
+          dImg.src = im.currentSrc || im.src; dImg.srcset = im.srcset; dImg.sizes = "(min-width: 900px) 60vw, 100vw"; dImg.alt = name;
+          dTitle.textContent = name; dCat.textContent = btn.getAttribute("data-car-cat");
+          dReq.href = "contact.html?services=cars&car=" + encodeURIComponent(name) + "#request";
+          dWa.href = waBase + "?text=" + encodeURIComponent(isAr ? "مرحباً Titanium Shop، أنا مهتم بسيارة " + name + "." : "Hello Titanium Shop, I'm interested in the " + name + ".");
+          dlg.showModal();
+          document.body.style.overflow = "hidden";
+        });
+      });
+      var closeDlg = function () { dlg.close(); };
+      dlg.querySelector("[data-car-close]").addEventListener("click", closeDlg);
+      dlg.addEventListener("click", function (e) { if (e.target === dlg) closeDlg(); });
+      dlg.addEventListener("close", function () { document.body.style.overflow = ""; if (lastBtn) lastBtn.focus(); });
+    }
+
+    // Request form: several services, their fields, subject line, WhatsApp follow-up
     var form = document.querySelector("[data-request-form]");
     if (form) {
-      var select = form.querySelector("[data-service-select]");
+      var boxes = form.querySelectorAll("[data-service-picker] input[type=checkbox]");
       var groups = form.querySelectorAll("[data-service-fields]");
+      var err = form.querySelector("[data-service-error]");
+      var chosen = function () { return Array.prototype.filter.call(boxes, function (b) { return b.checked; }); };
       var showFields = function () {
+        var on = chosen().map(function (b) { return b.value; });
         groups.forEach(function (g) {
-          var on = g.getAttribute("data-service-fields") === select.value;
-          g.hidden = !on;
-          g.querySelectorAll("input, select, textarea").forEach(function (el) { el.disabled = !on; });
+          var vis = on.indexOf(g.getAttribute("data-service-fields")) > -1;
+          g.hidden = !vis;
+          g.querySelectorAll("input, select, textarea").forEach(function (el) { el.disabled = !vis; });
         });
+        if (on.length) err.hidden = true;
       };
-      var preset = new URLSearchParams(window.location.search).get("service");
-      if (preset && select.querySelector('option[value="' + preset.replace(/[^a-z-]/g, "") + '"]')) {
-        select.value = preset;
-      }
+      var params = new URLSearchParams(window.location.search);
+      var preset = [];
+      params.getAll("services").concat(params.getAll("service")).forEach(function (v) { preset = preset.concat(v.split(",")); });
+      boxes.forEach(function (b) { if (preset.indexOf(b.value) > -1) b.checked = true; });
+      var car = params.get("car"), carSel = form.querySelector('[name="car"]');
+      if (car && carSel) Array.prototype.forEach.call(carSel.options, function (o) { if (o.text === car) carSel.value = o.value || o.text; });
       showFields();
-      select.addEventListener("change", showFields);
+      boxes.forEach(function (b) { b.addEventListener("change", showFields); });
 
       form.addEventListener("submit", function (e) {
-        if (!form.checkValidity()) return; // let the browser show its messages
-        var label = select.options[select.selectedIndex].text;
+        var picked = chosen();
+        if (!picked.length) {
+          e.preventDefault(); err.hidden = false;
+          boxes[0].focus(); return;
+        }
+        if (!form.checkValidity()) { e.preventDefault(); form.reportValidity(); return; }
+        var label = picked.map(function (b) { return b.getAttribute("data-label"); }).join(" + ");
         form.querySelector('[name="service"]').value = label;
         form.querySelector('[name="_subject"]').value = form.getAttribute("data-subject-prefix") + ": " + label;
         form.querySelector('[name="_next"]').value = new URL("thanks.html", window.location.href).href;
 
         var lines = [form.getAttribute("data-wa-intro"), "• " + label];
-        ["name", "date", "details"].forEach(function (n) {
+        ["name", "car", "date", "details"].forEach(function (n) {
           var el = form.querySelector('[name="' + n + '"]');
-          if (el && el.value.trim()) lines.push("• " + el.value.trim().slice(0, 300));
+          if (el && !el.disabled && el.value.trim()) lines.push("• " + el.value.trim().slice(0, 300));
         });
         storage("set", "ts_wa_message", lines.join("\n"));
         storage("set", "ts_wa_number", form.getAttribute("data-wa-number"));

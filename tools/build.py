@@ -41,6 +41,7 @@ class Page:
         self.lang = lang
         self.filename = filename
         self.prefix = "" if lang == "en" else "../"  # path back to repo root
+        self.service = None  # set on service pages: WhatsApp messages mention it
 
     def t(self, value):
         return value[self.lang] if isinstance(value, dict) else value
@@ -76,6 +77,10 @@ def ratio(name):
 
 
 def wa_link(p, text=None):
+    if not text and p.service:
+        name = p.t(p.service["title"])
+        text = {"en": f"Hello Titanium Shop, I'm interested in {name}.",
+                "ar": f"مرحباً Titanium Shop، أنا مهتم بخدمة {name}."}[p.lang]
     text = text or {"en": "Hello Titanium Shop, I'd like to make a request.",
                     "ar": "مرحباً Titanium Shop، أود تقديم طلب."}[p.lang]
     return f"https://wa.me/{C.CONTACT['whatsapp']}?text={urllib.parse.quote(text)}"
@@ -237,6 +242,7 @@ def cta_band(p):
     <span class="ornament" aria-hidden="true"></span>
     <h2 class="h2">{p.t(C.UI['cta_title'])}</h2>
     <p class="lead">{p.t(C.UI['cta_text'])}</p>
+    <p class="amman-clock" data-amman-clock hidden></p>
     <div class="btn-row center">
       <a class="btn btn-silver" href="{wa_link(p)}" target="_blank" rel="noopener noreferrer">{icon('whatsapp')}{p.t(C.UI['whatsapp'])}</a>
       <a class="btn btn-ghost" href="tel:{C.CONTACT['phone_tel']}">{icon('phone')}<span dir="ltr">{C.CONTACT['phone_display']}</span></a>
@@ -291,7 +297,7 @@ def footer(p):
 def page_head(p, kicker, title, lead, actions=True, service=None):
     btns = ""
     if actions:
-        req_href = f"contact.html?service={service}" if service else "contact.html"
+        req_href = f"contact.html?services={service}" if service else "contact.html"
         label = C.UI['request_this'] if service else C.UI['request']
         btns = f"""<div class="btn-row">
         <a class="btn btn-silver" href="{req_href}">{p.t(label)}</a>
@@ -344,6 +350,38 @@ def celebs_grid(p):
     return f'<ul class="celeb-grid">{items}</ul>'
 
 
+def service_choices(p, name, prefix):
+    """Checkbox 'chips' for the services, used on the home planner and the form."""
+    out = []
+    for s in C.SERVICES:
+        cid = f"{prefix}-{s['slug']}"
+        out.append(f'<li><input class="choice-input" type="checkbox" id="{cid}" '
+                   f'{f"name={chr(34)}{name}{chr(34)} " if name else ""}value="{s["slug"]}" data-label="{esc(p.t(s["title"]))}">'
+                   f'<label class="choice" for="{cid}">{icon("diamond", "icon choice-icon")}<span>{p.t(s["title"])}</span></label></li>')
+    return f'<ul class="choices">{"".join(out)}</ul>'
+
+
+def planner_block(p):
+    P = C.PLANNER
+    return f"""<section class="section section-alt planner" id="plan">
+  <div class="container narrow-wide">
+    <div class="section-head center reveal">
+      <span class="ornament" aria-hidden="true"></span>
+      <h2 class="h2">{p.t(P['title'])}</h2>
+      <p class="lead">{p.t(P['text'])}</p>
+    </div>
+    <form class="planner-form" action="contact.html#request" method="get" data-planner>
+      <fieldset>
+        <legend class="visually-hidden">{p.t(P['legend'])}</legend>
+        {service_choices(p, 'services', 'plan')}
+      </fieldset>
+      <p class="planner-count" data-planner-count aria-live="polite"></p>
+      <div class="center"><button class="btn btn-silver" type="submit">{p.t(P['cta'])}</button></div>
+    </form>
+  </div>
+</section>"""
+
+
 def build_home(p):
     H = C.HOME
     stats = "".join(f'<li><span class="stat-num">{p.t(n)}</span><span class="stat-label">{p.t(l)}</span></li>' for n, l in H["stats"])
@@ -362,6 +400,7 @@ def build_home(p):
       <a class="btn btn-silver" href="contact.html">{p.t(C.UI['request'])}</a>
       <a class="btn btn-ghost" href="#services">{p.t(H['hero_cta2'])}</a>
     </div>
+    <p class="amman-clock" data-amman-clock hidden></p>
   </div>
 </section>
 
@@ -385,6 +424,8 @@ def build_home(p):
     {services_grid(p)}
   </div>
 </section>
+
+{planner_block(p)}
 
 <section class="section">
   <div class="container split">
@@ -512,8 +553,11 @@ def fleet_block(p):
     def card(n, name, cat):
         featured = cat == "van"
         sizes = "(min-width: 1280px) 1200px, 100vw" if featured else "(min-width: 1100px) 33vw, (min-width: 640px) 50vw, 100vw"
-        return (f'<li class="fleet-card{" featured" if featured else ""}" data-cat="{cat}"><span class="frame">{img(p, n, name, sizes)}</span>'
-                f'<span class="fleet-name">{name}</span><span class="fleet-cat">{p.t(C.CAR_CATEGORIES[cat])}</span></li>')
+        return (f'<li class="fleet-card{" featured" if featured else ""}" data-cat="{cat}">'
+                f'<button type="button" class="car-open" data-car="{esc(name)}" data-car-cat="{esc(p.t(C.CAR_CATEGORIES[cat]))}" aria-haspopup="dialog">'
+                f'<span class="frame">{img(p, n, name, sizes)}</span>'
+                f'<span class="fleet-name">{name}</span><span class="fleet-cat">{p.t(C.CAR_CATEGORIES[cat])}</span>'
+                f'<span class="fleet-more">{p.t(C.CAR_DIALOG["view"])}{icon("arrow", "icon arrow")}</span></button></li>')
     ordered = [c for c in C.FLEET if c[2] != "van"] + [c for c in C.FLEET if c[2] == "van"]
     cards = "".join(card(*c) for c in ordered)
     return f"""<section class="section spotlight" id="fleet" data-spotlight>
@@ -522,7 +566,28 @@ def fleet_block(p):
     <div class="chips reveal" role="group" aria-label="{p.t(C.L('تصفية الأسطول', 'Filter the fleet'))}">{btns}</div>
     <ul class="fleet-grid fleet-full" data-fleet>{cards}</ul>
   </div>
-</section>"""
+</section>
+{car_dialog(p)}"""
+
+
+def car_dialog(p):
+    D = C.CAR_DIALOG
+    facts = "".join(f'<div class="fact"><dt>{p.t(k)}</dt><dd{" data-car-cat-out" if i == 0 else ""}>{p.t(v)}</dd></div>' for i, (k, v) in enumerate(D["facts"]))
+    return f"""<dialog class="car-dialog" data-car-dialog aria-labelledby="car-dialog-title">
+  <div class="car-dialog-inner">
+    <button type="button" class="dialog-close" data-car-close aria-label="{p.t(C.UI['close'])}">{icon('close')}</button>
+    <div class="car-dialog-media"><img data-car-img src="" alt="" width="1600" height="900"></div>
+    <div class="car-dialog-body">
+      <p class="kicker">{p.t(C.SERVICE_BY_SLUG_TITLE)}</p>
+      <h2 class="h2" id="car-dialog-title" data-car-title></h2>
+      <dl class="facts">{facts}</dl>
+      <div class="btn-row">
+        <a class="btn btn-silver" href="contact.html?services=cars#request" data-car-request>{p.t(D['request'])}</a>
+        <a class="btn btn-ghost" href="{wa_link(p)}" target="_blank" rel="noopener noreferrer" data-car-wa>{icon('whatsapp')}{p.t(C.UI['whatsapp'])}</a>
+      </div>
+    </div>
+  </div>
+</dialog>"""
 
 
 def jets_block(p):
@@ -561,6 +626,7 @@ def events_extra(p):
 
 
 def build_service(p, s):
+    p.service = s
     hero_name = s["img"]
     portrait_hero = ratio(hero_name) < 1.2
     title_tag = f"{p.t(s['title'])} | {C.BRAND}"
@@ -675,7 +741,8 @@ def build_contact(p):
         "events": field("f-etype", t(F["event_type"]), f'<select id="f-etype" name="occasion"><option>{t(F["wedding"])}</option><option>{t(F["conference"])}</option></select>')
         + field("f-eguests", t(F["guests"]), '<input id="f-eguests" name="event_guests" type="number" min="1" max="5000" inputmode="numeric">'),
     }
-    group_html = "".join(f'<div class="field-group" data-service-fields="{k}" hidden>{v}</div>' for k, v in groups.items())
+    titles = {s["slug"]: t(s["title"]) for s in C.SERVICES}
+    group_html = "".join(f'<fieldset class="field-group" data-service-fields="{k}" hidden><legend>{titles[k]}</legend>{v}</fieldset>' for k, v in groups.items())
     subject_prefix = t(C.L("طلب جديد من الموقع", "New website request"))
     return f"""{head(p, f"{t(F['title'])} | {C.BRAND}", t(F['meta']), schema=True)}{header(p, 'contact')}
 <main id="main">
@@ -684,11 +751,12 @@ def build_contact(p):
     <p class="kicker">{t(C.UI['cs_247'])}</p>
     <h1 class="h1">{t(F['title'])}</h1>
     <p class="lead">{t(F['lead'])}</p>
+    <p class="amman-clock" data-amman-clock hidden></p>
   </div>
 </section>
 <section class="section section-tight">
   <div class="container contact-grid">
-    <form class="request-form" action="{C.FORM_ACTION}" method="POST" data-request-form
+    <form class="request-form" id="request" novalidate action="{C.FORM_ACTION}" method="POST" data-request-form
           data-subject-prefix="{esc(subject_prefix)}" data-wa-number="{C.CONTACT['whatsapp']}"
           data-wa-intro="{esc(t(C.L('مرحباً Titanium Shop، أرسلت طلباً عبر الموقع:', 'Hello Titanium Shop, I just sent a request on your website:')))}">
       <h2 class="h3">{t(F['form_title'])}</h2>
@@ -701,7 +769,11 @@ def build_contact(p):
       {field('f-name', t(F['name']), '<input id="f-name" name="name" type="text" required maxlength="80" autocomplete="name">')}
       {field('f-phone', t(F['phone']), '<input id="f-phone" name="phone" type="tel" required maxlength="20" pattern="[+0-9 ()-]{7,20}" autocomplete="tel" dir="ltr" placeholder="+962 7…">')}
       {field('f-email', t(F['email']), '<input id="f-email" name="email" type="email" maxlength="120" autocomplete="email" dir="ltr">')}
-      {field('f-service', t(F['service']), f'<select id="f-service" name="service_code" required data-service-select><option value="">{t(F["choose"])}</option>{opts}<option value="other">{t(F["other"])}</option></select>')}
+      <fieldset class="field" data-service-picker>
+        <legend>{t(F['services_pick'])}</legend>
+        {service_choices(p, '', 'f')}
+        <p class="field-error" data-service-error hidden>{t(F['services_error'])}</p>
+      </fieldset>
       {group_html}
       {field('f-date', t(F['date']), '<input id="f-date" name="date" type="date">')}
       {field('f-details', t(F['details']), '<textarea id="f-details" name="details" rows="4" maxlength="1000"></textarea>')}
