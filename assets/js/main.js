@@ -274,6 +274,32 @@
       });
     }
 
+    // Ornament light wave: once when it scrolls into view, then on hover (desktop) or tap (phone)
+    var orns = document.querySelectorAll(".ornament");
+    if (orns.length && !reduce) {
+      var wave = function (el) {
+        if (el.classList.contains("is-waving")) return;
+        el.classList.add("is-waving");
+        setTimeout(function () { el.classList.remove("is-waving"); }, 1000);
+      };
+      var canHover = window.matchMedia("(hover: hover)").matches;
+      Array.prototype.forEach.call(orns, function (el) {
+        el.insertAdjacentHTML("beforeend", '<span class="orn-hit"></span><span class="orn-wave"></span><span class="orn-shine"></span>');
+        if (canHover) el.addEventListener("mouseenter", function () { wave(el); });
+        else el.addEventListener("pointerdown", function () { wave(el); });
+      });
+      if ("IntersectionObserver" in window) {
+        var oo = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (!e.isIntersecting) return;
+            oo.unobserve(e.target);
+            setTimeout(function () { wave(e.target); }, 250);
+          });
+        }, { threshold: 1, rootMargin: "0px 0px -12% 0px" });
+        Array.prototype.forEach.call(orns, function (el) { oo.observe(el); });
+      }
+    }
+
     // Thank-you page: WhatsApp button carries the request summary
     var cont = document.querySelector("[data-wa-continue]");
     if (cont) {
