@@ -27,6 +27,7 @@ def _ver(path):
 
 CSS_V = _ver("assets/css/style.css")
 JS_V = _ver("assets/js/main.js")
+LENIS_V = _ver("assets/js/vendor/lenis.min.js")
 INTRO_V = _ver("assets/js/intro.js")
 
 
@@ -172,6 +173,7 @@ def head(p, title, description, noindex=False, schema=False):
 {''.join(f'<link rel="preload" href="{p.asset("assets/fonts/" + f)}" as="font" type="font/woff2" crossorigin>' for f in PRELOAD[p.lang])}
 <link rel="stylesheet" href="{p.asset('assets/css/style.css')}?v={CSS_V}">
 <script src="{p.asset('assets/js/intro.js')}?v={INTRO_V}"></script>
+<script src="{p.asset('assets/js/vendor/lenis.min.js')}?v={LENIS_V}" defer></script>
 <script src="{p.asset('assets/js/main.js')}?v={JS_V}" defer></script>
 {jsonld(p) if schema else ''}
 </head>
@@ -575,7 +577,7 @@ def fleet_block(p):
 def car_dialog(p):
     D = C.CAR_DIALOG
     facts = "".join(f'<div class="fact"><dt>{p.t(k)}</dt><dd{" data-car-cat-out" if i == 0 else ""}>{p.t(v)}</dd></div>' for i, (k, v) in enumerate(D["facts"]))
-    return f"""<dialog class="car-dialog" data-car-dialog aria-labelledby="car-dialog-title">
+    return f"""<dialog data-lenis-prevent class="car-dialog" data-car-dialog aria-labelledby="car-dialog-title">
   <div class="car-dialog-inner">
     <button type="button" class="dialog-close" data-car-close aria-label="{p.t(C.UI['close'])}">{icon('close')}</button>
     <div class="car-dialog-media"><img data-car-img src="" alt="" width="1600" height="900"></div>

@@ -47,6 +47,111 @@
       document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !menu.hidden) { setMenu(false); toggle.focus(); } });
     }
 
+    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var finePointer = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+    // Smooth, weighted scrolling on desktop (Lenis); phones keep their native scroll
+    var lenis = null;
+    if (window.Lenis && finePointer && !reduceMotion) {
+      try {
+        lenis = new window.Lenis({ duration: 1.15, smoothWheel: true, autoRaf: true,
+          easing: function (x) { return Math.min(1, 1.001 - Math.pow(2, -10 * x)); } });
+        window.__lenis = lenis;
+        // In-page links glide to their section, clearing the fixed header
+        document.addEventListener("click", function (e) {
+          var a = e.target.closest && e.target.closest('a[href^="#"]');
+          if (!a || a.getAttribute("href").length < 2) return;
+          var target = document.getElementById(decodeURIComponent(a.getAttribute("href").slice(1)));
+          if (!target) return;
+          e.preventDefault();
+          lenis.resize();
+          // Lenis already honours the page's scroll-padding-top (header height + 16px)
+          lenis.scrollTo(target, { duration: 1.4 });
+          if (history.pushState) history.pushState(null, "", a.getAttribute("href"));
+        });
+      } catch (e) { lenis = null; }
+    }
+
+    // Thin reading-progress line
+    if (!reduceMotion) {
+      var bar = document.createElement("div");
+      bar.className = "scroll-progress"; bar.setAttribute("aria-hidden", "true");
+      document.body.appendChild(bar);
+      var barTick = false;
+      var paintBar = function () {
+        barTick = false;
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.transform = "scaleX(" + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ")";
+      };
+      window.addEventListener("scroll", function () { if (!barTick) { barTick = true; requestAnimationFrame(paintBar); } }, { passive: true });
+      paintBar();
+    }
+
+    // Stagger siblings that reveal together (cards, lists, columns)
+    document.querySelectorAll(".reveal").forEach(function (el) {
+      if (el.style.getPropertyValue("--d")) return;
+      var sibs = Array.prototype.filter.call(el.parentNode.children, function (c) { return c.classList.contains("reveal"); });
+      if (sibs.length > 1) el.style.setProperty("--d", Math.min(sibs.indexOf(el), 5) * 0.09 + "s");
+    });
+
+    // Headings rise line by line from behind a mask, then return to plain text
+    var splitHeading = function (h, delay) {
+      if (h.classList.contains("is-split") || h.children.length) return false;
+      var text = h.textContent.replace(/\s+/g, " ").trim();
+      if (!text) return false;
+      var words = text.split(" ");
+      h.innerHTML = words.map(function (w) { return '<span class="ln-w" style="display:inline-block">' + w.replace(/&/g, "&amp;").replace(/</g, "&lt;") + "</span>"; }).join(" ");
+      var lines = [], lastTop = null;
+      Array.prototype.forEach.call(h.querySelectorAll(".ln-w"), function (s) {
+        var t = Math.round(s.offsetTop);
+        if (lastTop === null || Math.abs(t - lastTop) > 4) { lines.push([]); lastTop = t; }
+        lines[lines.length - 1].push(s.textContent);
+      });
+      h.setAttribute("aria-label", text);
+      h.innerHTML = lines.map(function (l, i) {
+        return '<span class="ln" aria-hidden="true"><span class="ln-i" style="--i:' + i + '">' + l.join(" ").replace(/&/g, "&amp;").replace(/</g, "&lt;") + "</span></span>";
+      }).join("");
+      h.classList.add("is-split");
+      void h.offsetWidth;
+      setTimeout(function () { h.classList.add("in"); }, delay || 0);
+      setTimeout(function () {
+        h.textContent = text; h.removeAttribute("aria-label"); h.classList.remove("is-split");
+      }, (delay || 0) + 1300 + lines.length * 140 + 150);
+      return true;
+    };
+    var heads = document.querySelectorAll("main .display, main .h1, main .h2");
+    var lift = function () { document.documentElement.classList.remove("split-hold"); };
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      lift();
+    } else {
+      var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+      fontsReady.then(function () {
+        var introOn = document.documentElement.classList.contains("show-intro");
+        var ho = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (!e.isIntersecting) return;
+            ho.unobserve(e.target);
+            var top = e.target.closest(".hero, .page-hero");
+            splitHeading(e.target, top ? (introOn ? 1500 : 120) : 0);
+            if (top) lift();
+          });
+        }, { rootMargin: "0px 0px -6% 0px" });
+        Array.prototype.forEach.call(heads, function (h) { if (!h.closest("dialog")) ho.observe(h); });
+        setTimeout(lift, 600);
+      });
+    }
+
+    // Photos appear at once, then settle from a slight zoom as they come into view
+    var frames = document.querySelectorAll(".frame");
+    if (!reduceMotion && "IntersectionObserver" in window) {
+      var fio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("settled"); fio.unobserve(e.target); } });
+      }, { rootMargin: "0px 0px -4% 0px" });
+      frames.forEach(function (f) { fio.observe(f); });
+    } else {
+      frames.forEach(function (f) { f.classList.add("settled"); });
+    }
+
     // Reveal on scroll
     var reveals = document.querySelectorAll(".reveal");
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -57,7 +162,7 @@
         entries.forEach(function (entry) {
           if (entry.isIntersecting) { entry.target.classList.add("in"); io.unobserve(entry.target); }
         });
-      }, { rootMargin: "0px 0px 15% 0px", threshold: 0 });
+      }, { rootMargin: "0px 0px -6% 0px", threshold: 0 });
       reveals.forEach(function (el) { io.observe(el); });
     }
 
@@ -219,12 +324,13 @@
           dWa.href = waBase + "?text=" + encodeURIComponent(isAr ? "مرحباً Titanium Shop، أنا مهتم بسيارة " + name + "." : "Hello Titanium Shop, I'm interested in the " + name + ".");
           dlg.showModal();
           document.body.style.overflow = "hidden";
+          if (window.__lenis) window.__lenis.stop();
         });
       });
       var closeDlg = function () { dlg.close(); };
       dlg.querySelector("[data-car-close]").addEventListener("click", closeDlg);
       dlg.addEventListener("click", function (e) { if (e.target === dlg) closeDlg(); });
-      dlg.addEventListener("close", function () { document.body.style.overflow = ""; if (lastBtn) lastBtn.focus(); });
+      dlg.addEventListener("close", function () { document.body.style.overflow = ""; if (window.__lenis) window.__lenis.start(); if (lastBtn) lastBtn.focus(); });
     }
 
     // Request form: several services, their fields, subject line, WhatsApp follow-up
