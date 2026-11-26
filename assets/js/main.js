@@ -280,11 +280,21 @@
       var wave = function (el) {
         if (el.classList.contains("is-waving")) return;
         el.classList.add("is-waving");
-        setTimeout(function () { el.classList.remove("is-waving"); }, 1000);
+        var r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        var w = window.innerWidth, h = window.innerHeight;
+        var far = Math.max(Math.hypot(cx, cy), Math.hypot(w - cx, cy), Math.hypot(cx, h - cy), Math.hypot(w - cx, h - cy));
+        var ring = document.createElement("span");
+        ring.className = "orn-ring";
+        ring.setAttribute("aria-hidden", "true");
+        ring.style.left = cx + "px"; ring.style.top = cy + "px";
+        ring.style.setProperty("--orn-d", Math.ceil(far * 2) + "px");
+        document.body.appendChild(ring);
+        ring.addEventListener("animationend", function () { ring.remove(); });
+        setTimeout(function () { el.classList.remove("is-waving"); }, 1200);
       };
       var canHover = window.matchMedia("(hover: hover)").matches;
       Array.prototype.forEach.call(orns, function (el) {
-        el.insertAdjacentHTML("beforeend", '<span class="orn-hit"></span><span class="orn-wave"></span><span class="orn-shine"></span>');
+        el.insertAdjacentHTML("beforeend", '<span class="orn-hit"></span><span class="orn-shine"></span>');
         if (canHover) el.addEventListener("mouseenter", function () { wave(el); });
         else el.addEventListener("pointerdown", function () { wave(el); });
       });

@@ -140,11 +140,17 @@ html[lang="ar"] .kicker { letter-spacing: 0; text-transform: none; font-size: 15
 
 /* Ornament light wave: one soft silver ring from the diamond, lines catch the light */
 .orn-hit { position: absolute; left: 50%; top: 50%; width: 72px; height: 48px; transform: translate(-50%, -50%); }
-.orn-wave, .orn-shine { position: absolute; pointer-events: none; opacity: 0; }
-.orn-wave {
-  left: 50%; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%;
-  border: 1px solid rgba(226, 229, 234, .85);
-  box-shadow: 0 0 10px rgba(226, 229, 234, .35), inset 0 0 6px rgba(226, 229, 234, .2);
+.orn-shine { position: absolute; pointer-events: none; opacity: 0; }
+.orn-ring {
+  position: fixed; z-index: 5; width: 12px; height: 12px; border-radius: 50%; pointer-events: none;
+  transform: translate(-50%, -50%); border: 1px solid rgba(226, 229, 234, .8);
+  box-shadow: 0 0 14px rgba(226, 229, 234, .28), inset 0 0 10px rgba(226, 229, 234, .14);
+  animation: orn-ring 2.8s cubic-bezier(.3, .45, .4, 1) forwards;
+}
+@keyframes orn-ring {
+  0% { width: 12px; height: 12px; opacity: .95; }
+  55% { opacity: .5; }
+  100% { width: var(--orn-d); height: var(--orn-d); opacity: 0; }
 }
 .orn-shine {
   inset-inline: 0; top: 50%; height: 1px; margin-top: -0.5px;
@@ -152,12 +158,7 @@ html[lang="ar"] .kicker { letter-spacing: 0; text-transform: none; font-size: 15
 }
 .ornament::after { transition: filter .5s var(--ease); }
 .ornament.is-waving::after { filter: brightness(1.55) drop-shadow(0 0 5px rgba(226, 229, 234, .6)); }
-.ornament.is-waving .orn-wave { animation: orn-wave .95s cubic-bezier(.2, .7, .3, 1) forwards; }
 .ornament.is-waving .orn-shine { animation: orn-shine .95s var(--ease) forwards; }
-@keyframes orn-wave {
-  0% { opacity: .9; transform: scale(1); }
-  100% { opacity: 0; transform: scale(8); }
-}
 @keyframes orn-shine {
   0% { opacity: 1; transform: scaleX(0); }
   60% { opacity: .8; }
@@ -623,5 +624,5 @@ body, .section-alt, .site-footer { background-image: url("../brand/grain.png"); 
   .logo-intro { display: none !important; }
   @view-transition { navigation: none; }
   .frame-founder img { filter: none; }
-  .orn-wave, .orn-shine { display: none; }
+  .orn-ring, .orn-shine { display: none; }
 }
