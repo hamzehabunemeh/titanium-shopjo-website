@@ -15,7 +15,7 @@ def L(ar, en):
 # --------------------------------------------------------------------------
 # Business details
 # --------------------------------------------------------------------------
-SITE_URL = "https://titaniumshopjo.netlify.app"  # change when the domain is ready
+SITE_URL = "https://hamzehabunemeh.github.io/titanium-shopjo-website"  # GitHub Pages for now; switch to the Netlify URL or domain at launch
 BRAND = "Titanium Shop"
 
 CONTACT = {

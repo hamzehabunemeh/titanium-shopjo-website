@@ -3,4 +3,4 @@ Allow: /
 Disallow: /thanks.html
 Disallow: /ar/thanks.html
 
-Sitemap: https://titaniumshopjo.netlify.app/sitemap.xml
+Sitemap: https://hamzehabunemeh.github.io/titanium-shopjo-website/sitemap.xml

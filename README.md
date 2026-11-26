@@ -45,6 +45,7 @@ netlify.toml               Security headers, caching, 404s (Netlify)
 
 - **During development:** GitHub Pages from `main` (`/` root).
 - **Launch on Netlify:** Project configuration → Developer settings → Continuous deployment → Build settings → *Active builds*. No build command is needed (`publish = "."`). Security headers in `netlify.toml` only apply on Netlify.
+- **At launch:** `SITE_URL` in `content.py` currently points to GitHub Pages (so link previews work now). Change it to the Netlify URL or the domain, update the sitemap line in `robots.txt`, rebuild.
 - **Domain:** when bought, update `SITE_URL` in `content.py` and the sitemap line in `robots.txt`, rebuild, and add the domain in Netlify (Domain management).
 
 ## Still needed from the client
