@@ -164,7 +164,6 @@ SERVICES = [
         "facts": [
             (L("أقل مدة للحجز", "Minimum rental"), L("يومان", "Two days")),
             (L("السائق", "Chauffeur"), L("اختياري", "Optional")),
-            (L("الموديلات", "Models"), L("2024–2026", "2024–2026")),
         ],
         "faqs": [
             (L("هل يمكنني استئجار السيارة بدون سائق؟", "Can I rent a car without a chauffeur?"),
@@ -199,7 +198,6 @@ SERVICES = [
         "facts": [
             (L("الحجز قبل", "Book at least"), L("24 ساعة", "24 hours ahead")),
             (L("السعة", "Capacity"), L("6 أو 8 أو 12 أو 16 راكباً", "6, 8, 12 or 16 passengers")),
-            (L("الوجهات", "Destinations"), L("معظم الدول العربية الآمنة", "Most safe Arab countries")),
         ],
         "faqs": [
             (L("كم من الوقت قبل الرحلة يجب أن أحجز؟", "How far ahead should I book?"),
@@ -232,8 +230,7 @@ SERVICES = [
             L("يمكن تنسيق التنقل إلى المرسى", "Transfer to the marina can be arranged"),
         ],
         "facts": [
-            (L("نوع الرحلات", "Trip type"), L("بالساعات، بدون مبيت", "Hourly, no overnight stays")),
-            (L("الأماكن", "Locations"), L("معظم الدول", "Most countries")),
+            (L("المبيت", "Overnight stays"), L("غير متاح", "Not available")),
         ],
         "faqs": [
             (L("هل تتوفر رحلات مع مبيت؟", "Do you offer overnight trips?"),
@@ -264,7 +261,6 @@ SERVICES = [
             L("تكامل مع سياراتنا والاستقبال من المطار", "Works seamlessly with our cars and airport reception"),
         ],
         "facts": [
-            (L("لمن", "For"), L("رجال الأعمال، الدبلوماسيين، والفعاليات", "Executives, diplomats and events")),
             (L("الفريق", "Team"), L("ذو خبرة في الحماية", "Experienced in protection")),
             (L("التراخيص", "Licensing"), L("مرخّصون بالكامل", "Fully licensed")),
         ],
@@ -339,7 +335,6 @@ SERVICES = [
             L("تنسيق مع الاستقبال من المطار والسيارة", "Coordinated with airport reception and your car"),
         ],
         "facts": [
-            (L("الفنادق", "Hotels"), L("جميع فنادق الخمس نجوم في الأردن", "All five-star hotels in Jordan")),
         ],
         "faqs": [
             (L("في أي فنادق تحجزون؟", "Which hotels can you book?"),
