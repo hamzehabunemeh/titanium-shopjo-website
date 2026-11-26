@@ -122,7 +122,7 @@ def jsonld(p):
         "slogan": p.t(C.L("فخامة بلا حد", "Unlimited Luxury")),
         "url": C.SITE_URL + "/",
         "logo": C.SITE_URL + "/assets/brand/logo.png",
-        "image": C.SITE_URL + "/assets/brand/og-image.jpg",
+        "image": C.SITE_URL + "/assets/brand/og-image.jpg?v=2",
         "telephone": C.CONTACT["phone_tel"],
         "email": C.CONTACT["email"],
         "foundingDate": "2018",
@@ -157,11 +157,11 @@ def head(p, title, description, noindex=False, schema=False):
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(description)}">
 <meta property="og:url" content="{p.url()}">
-<meta property="og:image" content="{C.SITE_URL}/assets/brand/og-image.jpg">
+<meta property="og:image" content="{C.SITE_URL}/assets/brand/og-image.jpg?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="{esc(C.BRAND)}: {esc(p.t(C.L('فخامة بلا حد', 'Unlimited Luxury')))}">
-<meta name="twitter:image" content="{C.SITE_URL}/assets/brand/og-image.jpg">
+<meta name="twitter:image" content="{C.SITE_URL}/assets/brand/og-image.jpg?v=2">
 <meta property="og:locale" content="{'ar_JO' if p.lang == 'ar' else 'en_US'}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0a0a0b">
