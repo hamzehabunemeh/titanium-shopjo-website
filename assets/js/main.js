@@ -286,9 +286,18 @@
         var ring = document.createElement("span");
         ring.className = "orn-ring";
         ring.setAttribute("aria-hidden", "true");
-        ring.style.left = cx + "px"; ring.style.top = cy + "px";
+        // Anchored to the page, not the screen, so the wave scrolls with its diamond
+        var layer = document.querySelector(".orn-layer");
+        if (!layer) {
+          layer = document.createElement("div");
+          layer.className = "orn-layer";
+          layer.setAttribute("aria-hidden", "true");
+          document.body.appendChild(layer);
+        }
+        layer.style.height = document.documentElement.scrollHeight + "px";
+        ring.style.left = (cx + window.scrollX) + "px"; ring.style.top = (cy + window.scrollY) + "px";
         ring.style.setProperty("--orn-d", Math.ceil(far * 2) + "px");
-        document.body.appendChild(ring);
+        layer.appendChild(ring);
         ring.addEventListener("animationend", function () { ring.remove(); });
         setTimeout(function () { el.classList.remove("is-waving"); }, 1200);
       };
