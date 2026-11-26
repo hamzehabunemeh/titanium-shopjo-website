@@ -27,6 +27,7 @@ def _ver(path):
 
 CSS_V = _ver("assets/css/style.css")
 JS_V = _ver("assets/js/main.js")
+INTRO_V = _ver("assets/js/intro.js")
 
 
 def esc(s):
@@ -163,10 +164,18 @@ def head(p, title, description, noindex=False, schema=False):
 <link rel="manifest" href="{p.asset('site.webmanifest')}">
 {''.join(f'<link rel="preload" href="{p.asset("assets/fonts/" + f)}" as="font" type="font/woff2" crossorigin>' for f in PRELOAD[p.lang])}
 <link rel="stylesheet" href="{p.asset('assets/css/style.css')}?v={CSS_V}">
+<script src="{p.asset('assets/js/intro.js')}?v={INTRO_V}"></script>
 <script src="{p.asset('assets/js/main.js')}?v={JS_V}" defer></script>
 {jsonld(p) if schema else ''}
 </head>
 <body>
+<div class="logo-intro" aria-hidden="true" data-intro>
+  <svg class="intro-lines" viewBox="0 0 200 200" width="200" height="200">
+    <path class="intro-path" pathLength="1" d="M100 6 194 100 100 194 6 100Z"/>
+    <path class="intro-path p2" pathLength="1" d="M100 30 170 100 100 170 30 100Z"/>
+  </svg>
+  <img class="intro-emblem" src="{p.asset('assets/brand/emblem.webp')}" width="158" height="160" alt="">
+</div>
 <a class="skip-link" href="#main">{p.t(C.UI['skip'])}</a>
 """
 
@@ -317,6 +326,16 @@ def services_grid(p, exclude=None):
     return f'<ul class="service-grid">{"".join(cards)}</ul>'
 
 
+def celebs_marquee(p):
+    def items(hidden):
+        extra = ' aria-hidden="true"' if hidden else ""
+        return "".join(
+            f"""<li class="celeb"{extra}><figure><span class="frame">{img(p, name, "" if hidden else p.t(label) + (' with Hamza Khashman' if p.lang == 'en' else ' مع حمزة خشمان'), '240px')}</span>
+        <figcaption>{p.t(label)}</figcaption></figure></li>"""
+            for name, label in C.CELEBRITIES)
+    return f'<div class="marquee" data-marquee><ul class="marquee-track">{items(False)}{items(True)}</ul></div>'
+
+
 def celebs_grid(p):
     items = "".join(
         f"""<li class="celeb reveal"><figure><span class="frame">{img(p, name, p.t(label) + (' with Hamza Khashman' if p.lang == 'en' else ' مع حمزة خشمان'), '(min-width: 1100px) 16vw, (min-width: 640px) 33vw, 60vw')}</span>
@@ -334,7 +353,7 @@ def build_home(p):
     body = f"""{head(p, p.t(H['title']), p.t(H['meta']), schema=True)}{header(p, 'home')}
 <main id="main">
 <section class="hero">
-  <div class="hero-media">{img(p, 'escort-tarmac-sunset', p.t(C.L('رجل أعمال مع فريق الحراسة وسيارة فاخرة وطائرة خاصة عند الغروب', 'An executive with his protection team, a luxury car and a private jet at sunset')), '100vw', eager=True)}</div>
+  <div class="hero-media" data-parallax>{img(p, 'escort-tarmac-sunset', p.t(C.L('رجل أعمال مع فريق الحراسة وسيارة فاخرة وطائرة خاصة عند الغروب', 'An executive with his protection team, a luxury car and a private jet at sunset')), '100vw', eager=True)}</div>
   <div class="container hero-content">
     <p class="kicker">{p.t(H['hero_kicker'])}</p>
     <h1 class="display">{p.t(H['hero_title'])}</h1>
@@ -379,7 +398,7 @@ def build_home(p):
   </div>
 </section>
 
-<section class="section section-alt">
+<section class="section section-alt spotlight" data-spotlight>
   <div class="container">
     <div class="section-head reveal">
       <h2 class="h2">{p.t(H['fleet_title'])}</h2>
@@ -396,8 +415,8 @@ def build_home(p):
       <h2 class="h2">{p.t(H['celebs_title'])}</h2>
       <p class="lead">{p.t(H['celebs_text'])}</p>
     </div>
-    {celebs_grid(p)}
-  </div>
+    </div>
+    {celebs_marquee(p)}
 </section>
 
 <section class="section section-alt">
@@ -497,7 +516,7 @@ def fleet_block(p):
                 f'<span class="fleet-name">{name}</span><span class="fleet-cat">{p.t(C.CAR_CATEGORIES[cat])}</span></li>')
     ordered = [c for c in C.FLEET if c[2] != "van"] + [c for c in C.FLEET if c[2] == "van"]
     cards = "".join(card(*c) for c in ordered)
-    return f"""<section class="section" id="fleet">
+    return f"""<section class="section spotlight" id="fleet" data-spotlight>
   <div class="container">
     <div class="section-head reveal"><h2 class="h2">{p.t(C.HOME['fleet_title'])}</h2></div>
     <div class="chips reveal" role="group" aria-label="{p.t(C.L('تصفية الأسطول', 'Filter the fleet'))}">{btns}</div>
@@ -556,7 +575,7 @@ def build_service(p, s):
     else:
         hero = f"""<section class="page-hero">
   <div class="container narrow-wide">{ph}</div>
-  <div class="container"><figure class="wide-figure">{img(p, hero_name, p.t(s['title']), '(min-width: 1280px) 1200px, 100vw', eager=True)}</figure></div>
+  <div class="container"><figure class="wide-figure" data-parallax>{img(p, hero_name, p.t(s['title']), '(min-width: 1280px) 1200px, 100vw', eager=True)}</figure></div>
 </section>"""
 
     extra_top = {"cars": fleet_block(p), "jets": jets_block(p)}.get(s["slug"], "")

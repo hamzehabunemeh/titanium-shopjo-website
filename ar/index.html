@@ -26,11 +26,19 @@
 <link rel="apple-touch-icon" href="../assets/brand/apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="preload" href="../assets/fonts/noto-naskh-arabic-arabic-600-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/ibm-plex-sans-arabic-arabic-300-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/css/style.css?v=9bd1cc4e">
-<script src="../assets/js/main.js?v=e2028baa" defer></script>
+<link rel="stylesheet" href="../assets/css/style.css?v=fe3d0dcf">
+<script src="../assets/js/intro.js?v=e83b9406"></script>
+<script src="../assets/js/main.js?v=43afb976" defer></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LocalBusiness", "name": "Titanium Shop", "slogan": "فخامة بلا حد", "url": "https://titaniumshopjo.netlify.app/", "logo": "https://titaniumshopjo.netlify.app/assets/brand/logo.png", "image": "https://titaniumshopjo.netlify.app/assets/brand/og-image.jpg", "telephone": "+962793888444", "email": "titaniumshopjo@gmail.com", "foundingDate": "2018", "address": {"@type": "PostalAddress", "streetAddress": "Al-Karadsheh Tower, 1st Floor", "addressLocality": "Amman", "addressCountry": "JO"}, "areaServed": ["JO", "AE", "SA", "EG", "LB"], "openingHoursSpecification": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "00:00", "closes": "23:59"}, "sameAs": ["https://www.instagram.com/titaniumshopjo/", "https://www.instagram.com/titanium_event.jo/", "https://www.facebook.com/TitaniumShopJO"]}</script>
 </head>
 <body>
+<div class="logo-intro" aria-hidden="true" data-intro>
+  <svg class="intro-lines" viewBox="0 0 200 200" width="200" height="200">
+    <path class="intro-path" pathLength="1" d="M100 6 194 100 100 194 6 100Z"/>
+    <path class="intro-path p2" pathLength="1" d="M100 30 170 100 100 170 30 100Z"/>
+  </svg>
+  <img class="intro-emblem" src="../assets/brand/emblem.webp" width="158" height="160" alt="">
+</div>
 <a class="skip-link" href="#main">تخطَّ إلى المحتوى</a>
 <header class="site-header" data-header>
   <div class="container header-inner">
@@ -75,7 +83,7 @@
 
 <main id="main">
 <section class="hero">
-  <div class="hero-media"><img src="../assets/img/escort-tarmac-sunset-960.webp" srcset="../assets/img/escort-tarmac-sunset-480.webp 480w, ../assets/img/escort-tarmac-sunset-960.webp 960w, ../assets/img/escort-tarmac-sunset-1600.webp 1600w" sizes="100vw" width="1600" height="893" alt="رجل أعمال مع فريق الحراسة وسيارة فاخرة وطائرة خاصة عند الغروب" fetchpriority="high" decoding="async"></div>
+  <div class="hero-media" data-parallax><img src="../assets/img/escort-tarmac-sunset-960.webp" srcset="../assets/img/escort-tarmac-sunset-480.webp 480w, ../assets/img/escort-tarmac-sunset-960.webp 960w, ../assets/img/escort-tarmac-sunset-1600.webp 1600w" sizes="100vw" width="1600" height="893" alt="رجل أعمال مع فريق الحراسة وسيارة فاخرة وطائرة خاصة عند الغروب" fetchpriority="high" decoding="async"></div>
   <div class="container hero-content">
     <p class="kicker">منذ 2018 · عمّان</p>
     <h1 class="display">فخامة بلا حد</h1>
@@ -200,7 +208,7 @@
   </div>
 </section>
 
-<section class="section section-alt">
+<section class="section section-alt spotlight" data-spotlight>
   <div class="container">
     <div class="section-head reveal">
       <h2 class="h2">أسطولنا</h2>
@@ -217,14 +225,20 @@
       <h2 class="h2">وثقوا بنا</h2>
       <p class="lead">نجوم العالم والوطن العربي يختارون Titanium Shop عند زيارتهم الأردن.</p>
     </div>
-    <ul class="celeb-grid"><li class="celeb reveal"><figure><span class="frame"><img src="../assets/img/mike-tyson-960.webp" srcset="../assets/img/mike-tyson-480.webp 480w, ../assets/img/mike-tyson-960.webp 960w, ../assets/img/mike-tyson-1092.webp 1092w" sizes="(min-width: 1100px) 16vw, (min-width: 640px) 33vw, 60vw" width="1092" height="1441" alt="مايك تايسون مع حمزة خشمان" loading="lazy" decoding="async"></span>
-        <figcaption>مايك تايسون</figcaption></figure></li><li class="celeb reveal"><figure><span class="frame"><img src="../assets/img/tamer-hosny-960.webp" srcset="../assets/img/tamer-hosny-480.webp 480w, ../assets/img/tamer-hosny-960.webp 960w, ../assets/img/tamer-hosny-1093.webp 1093w" sizes="(min-width: 1100px) 16vw, (min-width: 640px) 33vw, 60vw" width="1093" height="1439" alt="تامر حسني مع حمزة خشمان" loading="lazy" decoding="async"></span>
-        <figcaption>تامر حسني</figcaption></figure></li><li class="celeb reveal"><figure><span class="frame"><img src="../assets/img/ronaldinho-960.webp" srcset="../assets/img/ronaldinho-480.webp 480w, ../assets/img/ronaldinho-960.webp 960w, ../assets/img/ronaldinho-1086.webp 1086w" sizes="(min-width: 1100px) 16vw, (min-width: 640px) 33vw, 60vw" width="1086" height="1448" alt="رونالدينيو مع حمزة خشمان" loading="lazy" decoding="async"></span>
-        <figcaption>رونالدينيو</figcaption></figure></li><li class="celeb reveal"><figure><span class="frame"><img src="../assets/img/najwa-karam-941.webp" srcset="../assets/img/najwa-karam-480.webp 480w, ../assets/img/najwa-karam-941.webp 941w" sizes="(min-width: 1100px) 16vw, (min-width: 640px) 33vw, 60vw" width="941" height="1672" alt="نجوى كرم مع حمزة خشمان" loading="lazy" decoding="async"></span>
-        <figcaption>نجوى كرم</figcaption></figure></li><li class="celeb reveal"><figure><span class="frame"><img src="../assets/img/ahmed-saad-960.webp" srcset="../assets/img/ahmed-saad-480.webp 480w, ../assets/img/ahmed-saad-960.webp 960w, ../assets/img/ahmed-saad-1086.webp 1086w" sizes="(min-width: 1100px) 16vw, (min-width: 640px) 33vw, 60vw" width="1086" height="1448" alt="أحمد سعد مع حمزة خشمان" loading="lazy" decoding="async"></span>
-        <figcaption>أحمد سعد</figcaption></figure></li><li class="celeb reveal"><figure><span class="frame"><img src="../assets/img/fadel-chaker-960.webp" srcset="../assets/img/fadel-chaker-480.webp 480w, ../assets/img/fadel-chaker-960.webp 960w, ../assets/img/fadel-chaker-1086.webp 1086w" sizes="(min-width: 1100px) 16vw, (min-width: 640px) 33vw, 60vw" width="1086" height="1448" alt="فضل شاكر مع حمزة خشمان" loading="lazy" decoding="async"></span>
-        <figcaption>فضل شاكر</figcaption></figure></li></ul>
-  </div>
+    </div>
+    <div class="marquee" data-marquee><ul class="marquee-track"><li class="celeb"><figure><span class="frame"><img src="../assets/img/mike-tyson-960.webp" srcset="../assets/img/mike-tyson-480.webp 480w, ../assets/img/mike-tyson-960.webp 960w, ../assets/img/mike-tyson-1092.webp 1092w" sizes="240px" width="1092" height="1441" alt="مايك تايسون مع حمزة خشمان" loading="lazy" decoding="async"></span>
+        <figcaption>مايك تايسون</figcaption></figure></li><li class="celeb"><figure><span class="frame"><img src="../assets/img/tamer-hosny-960.webp" srcset="../assets/img/tamer-hosny-480.webp 480w, ../assets/img/tamer-hosny-960.webp 960w, ../assets/img/tamer-hosny-1093.webp 1093w" sizes="240px" width="1093" height="1439" alt="تامر حسني مع حمزة خشمان" loading="lazy" decoding="async"></span>
+        <figcaption>تامر حسني</figcaption></figure></li><li class="celeb"><figure><span class="frame"><img src="../assets/img/ronaldinho-960.webp" srcset="../assets/img/ronaldinho-480.webp 480w, ../assets/img/ronaldinho-960.webp 960w, ../assets/img/ronaldinho-1086.webp 1086w" sizes="240px" width="1086" height="1448" alt="رونالدينيو مع حمزة خشمان" loading="lazy" decoding="async"></span>
+        <figcaption>رونالدينيو</figcaption></figure></li><li class="celeb"><figure><span class="frame"><img src="../assets/img/najwa-karam-941.webp" srcset="../assets/img/najwa-karam-480.webp 480w, ../assets/img/najwa-karam-941.webp 941w" sizes="240px" width="941" height="1672" alt="نجوى كرم مع حمزة خشمان" loading="lazy" decoding="async"></span>
+        <figcaption>نجوى كرم</figcaption></figure></li><li class="celeb"><figure><span class="frame"><img src="../assets/img/ahmed-saad-960.webp" srcset="../assets/img/ahmed-saad-480.webp 480w, ../assets/img/ahmed-saad-960.webp 960w, ../assets/img/ahmed-saad-1086.webp 1086w" sizes="240px" width="1086" height="1448" alt="أحمد سعد مع حمزة خشمان" loading="lazy" decoding="async"></span>
+        <figcaption>أحمد سعد</figcaption></figure></li><li class="celeb"><figure><span class="frame"><img src="../assets/img/fadel-chaker-960.webp" srcset="../assets/img/fadel-chaker-480.webp 480w, ../assets/img/fadel-chaker-960.webp 960w, ../assets/img/fadel-chaker-1086.webp 1086w" sizes="240px" width="1086" height="1448" alt="فضل شاكر مع حمزة خشمان" loading="lazy" decoding="async"></span>
+        <figcaption>فضل شاكر</figcaption></figure></li><li class="celeb" aria-hidden="true"><figure><span class="frame"><img src="../assets/img/mike-tyson-960.webp" srcset="../assets/img/mike-tyson-480.webp 480w, ../assets/img/mike-tyson-960.webp 960w, ../assets/img/mike-tyson-1092.webp 1092w" sizes="240px" width="1092" height="1441" alt="" loading="lazy" decoding="async"></span>
+        <figcaption>مايك تايسون</figcaption></figure></li><li class="celeb" aria-hidden="true"><figure><span class="frame"><img src="../assets/img/tamer-hosny-960.webp" srcset="../assets/img/tamer-hosny-480.webp 480w, ../assets/img/tamer-hosny-960.webp 960w, ../assets/img/tamer-hosny-1093.webp 1093w" sizes="240px" width="1093" height="1439" alt="" loading="lazy" decoding="async"></span>
+        <figcaption>تامر حسني</figcaption></figure></li><li class="celeb" aria-hidden="true"><figure><span class="frame"><img src="../assets/img/ronaldinho-960.webp" srcset="../assets/img/ronaldinho-480.webp 480w, ../assets/img/ronaldinho-960.webp 960w, ../assets/img/ronaldinho-1086.webp 1086w" sizes="240px" width="1086" height="1448" alt="" loading="lazy" decoding="async"></span>
+        <figcaption>رونالدينيو</figcaption></figure></li><li class="celeb" aria-hidden="true"><figure><span class="frame"><img src="../assets/img/najwa-karam-941.webp" srcset="../assets/img/najwa-karam-480.webp 480w, ../assets/img/najwa-karam-941.webp 941w" sizes="240px" width="941" height="1672" alt="" loading="lazy" decoding="async"></span>
+        <figcaption>نجوى كرم</figcaption></figure></li><li class="celeb" aria-hidden="true"><figure><span class="frame"><img src="../assets/img/ahmed-saad-960.webp" srcset="../assets/img/ahmed-saad-480.webp 480w, ../assets/img/ahmed-saad-960.webp 960w, ../assets/img/ahmed-saad-1086.webp 1086w" sizes="240px" width="1086" height="1448" alt="" loading="lazy" decoding="async"></span>
+        <figcaption>أحمد سعد</figcaption></figure></li><li class="celeb" aria-hidden="true"><figure><span class="frame"><img src="../assets/img/fadel-chaker-960.webp" srcset="../assets/img/fadel-chaker-480.webp 480w, ../assets/img/fadel-chaker-960.webp 960w, ../assets/img/fadel-chaker-1086.webp 1086w" sizes="240px" width="1086" height="1448" alt="" loading="lazy" decoding="async"></span>
+        <figcaption>فضل شاكر</figcaption></figure></li></ul></div>
 </section>
 
 <section class="section section-alt">

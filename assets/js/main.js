@@ -108,6 +108,49 @@
       counters.forEach(function (c) { co.observe(c); });
     }
 
+    // Logo intro: finish early on any interaction, always clean up
+    if (doc.classList.contains("show-intro")) {
+      var endIntro = function () {
+        doc.classList.add("intro-done"); doc.classList.remove("show-intro");
+        ["wheel", "touchstart", "keydown", "mousedown"].forEach(function (ev) { window.removeEventListener(ev, endIntro); });
+      };
+      setTimeout(endIntro, 1800);
+      ["wheel", "touchstart", "keydown", "mousedown"].forEach(function (ev) { window.addEventListener(ev, endIntro, { passive: true }); });
+    }
+
+    var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+    // Showroom spotlight
+    if (fine) {
+      document.querySelectorAll("[data-spotlight]").forEach(function (sec) {
+        sec.addEventListener("pointermove", function (e) {
+          var r = sec.getBoundingClientRect();
+          sec.style.setProperty("--mx", (e.clientX - r.left) + "px");
+          sec.style.setProperty("--my", (e.clientY - r.top) + "px");
+          sec.classList.add("is-lit");
+        });
+        sec.addEventListener("pointerleave", function () { sec.classList.remove("is-lit"); });
+      });
+    }
+
+    // Parallax on wide photos (desktop only)
+    var plx = document.querySelectorAll("[data-parallax] img");
+    if (plx.length && fine && !reduce && window.innerWidth >= 900) {
+      var ticking = false;
+      var update = function () {
+        var vh = window.innerHeight;
+        plx.forEach(function (im) {
+          var r = im.parentElement.getBoundingClientRect();
+          if (r.bottom < 0 || r.top > vh) return;
+          var k = (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2); // -1..1
+          im.style.translate = "0 " + (-k * 40).toFixed(1) + "px";
+        });
+        ticking = false;
+      };
+      window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+      update();
+    }
+
     // Fleet filter
     var fleet = document.querySelector("[data-fleet]");
     if (fleet) {
