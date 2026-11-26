@@ -380,7 +380,9 @@ html[lang="ar"] .signature span { letter-spacing: 0; font-size: 15px; }
 .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--silver); }
 .field select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--silver) 50%), linear-gradient(135deg, var(--silver) 50%, transparent 50%); background-position: calc(100% - 22px) 50%, calc(100% - 16px) 50%; background-size: 6px 6px; background-repeat: no-repeat; padding-inline-end: 44px; }
 html[dir="rtl"] .field select { background-position: 22px 50%, 16px 50%; }
-.field input[type="date"] { color-scheme: dark; }
+.field input[type="date"] { color-scheme: dark; display: block; min-width: 0; max-width: 100%; -webkit-appearance: none; appearance: none; }
+/* iOS Safari gives date inputs their own minimum width and centred text */
+.field input[type="date"]::-webkit-date-and-time-value { text-align: start; min-height: 1.5em; }
 .field-group { display: grid; gap: 0 20px; }
 @media (min-width: 640px) { .field-group { grid-template-columns: repeat(2, 1fr); } }
 .field-group[hidden] { display: none; }
@@ -539,7 +541,7 @@ html[lang="ar"] .fleet-more { letter-spacing: 0; font-size: 14px; }
 
 /* 3. Smooth cross-fade between pages (supported browsers) */
 @view-transition { navigation: auto; }
-::view-transition-old(root), ::view-transition-new(root) { animation-duration: .45s; animation-timing-function: var(--ease); }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .22s; animation-timing-function: var(--ease); }
 
 /* 4. Parallax depth on wide photos (desktop) */
 [data-parallax] img { will-change: translate; }
