@@ -94,6 +94,7 @@ html[dir="rtl"] .arrow { transform: scaleX(-1); }
 .section-alt { background: var(--surface); }
 
 .section-head { max-width: 720px; margin-bottom: clamp(40px, 6vw, 64px); }
+.section-head.center { margin-inline: auto; }
 .section-head .lead { margin-bottom: 0; }
 
 .split { display: grid; gap: clamp(40px, 6vw, 96px); align-items: center; }
